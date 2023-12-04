@@ -1,18 +1,14 @@
-(* tools.ml *)
-
 open Graph
 
 let clone_nodes (gr: 'a graph) : 'b graph =
-  (* Create a new graph with the same nodes but no arcs *)
-  List.map (fun (id, _) -> (id, [])) gr
-
-let gmap (gr: 'a graph) (f: 'a -> 'b) : 'b graph =
-  (* Map the arcs of the graph using function f *)
-  List.map (fun (id, arcs) -> (id, List.map (fun arc -> { arc with lbl = f arc.lbl }) arcs)) gr
+  n_fold gr (fun acc id -> new_node acc id) empty_graph
 
 let add_arc g id1 id2 n =
-    match find_arc g id1 id2 with
-    | None -> new_arc g id1 id2 n
-    | Some a ->  new_arc g id1 id2 (n+a)
+  let new_arc_value = { src = id1; tgt = id2; lbl = n } in
+  match find_arc g id1 id2 with
+  | None -> new_arc g new_arc_value
+  | Some a -> new_arc g { a with lbl = n + a.lbl }
+
+let gmap g f = e_fold g (fun acu e -> new_arc acu {e with lbl = f e.lbl}) (clone_nodes g)
 
 

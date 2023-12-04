@@ -1,8 +1,8 @@
-open Gfile
-    
-let () =
 
-  (* Check the number of command-line arguments *)
+open Gfile
+open Tools
+
+let () =
   if Array.length Sys.argv <> 5 then
     begin
       Printf.printf
@@ -14,22 +14,18 @@ let () =
       exit 0
     end ;
 
+  let infile = Sys.argv.(1) in
+  let _source = int_of_string Sys.argv.(2) in
+  let _sink = int_of_string Sys.argv.(3) in
+  let outfile = Sys.argv.(4) in
 
-  (* Arguments are : infile(1) source-id(2) sink-id(3) outfile(4) *)
-  
-  let infile = Sys.argv.(1)
-  and outfile = Sys.argv.(4)
-  
-  (* These command-line arguments are not used for the moment. *)
-  and _source = int_of_string Sys.argv.(2)
-  and _sink = int_of_string Sys.argv.(3)
-  in
-
-  (* Open file *)
   let graph = from_file infile in
 
-  (* Rewrite the graph that has been read. *)
-  let () = write_file outfile graph in
+  (* Clone nodes, map labels, add arc *)
 
+  let graph2 = gmap graph (fun lbl -> int_of_string lbl) in
+  let graph3 = add_arc graph2 0 5 15 in
+  let graph4 = gmap graph3 (fun lbl -> string_of_int lbl) in
+
+  write_file outfile graph4;
   ()
-

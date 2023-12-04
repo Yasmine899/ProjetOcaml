@@ -1,6 +1,6 @@
 
 (* Type of a directed graph in which arcs have labels of type 'a. 
- * This type is deliberately abstract. *)a
+ * This type is deliberately abstract. *)
 type 'a graph
 
 (* Each node has a unique identifier (a number). *)
