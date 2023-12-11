@@ -22,7 +22,7 @@ let outfiledot=Sys.argv.(5)in
 
   let graph = from_file infile in
 
-  (* Clone nodes, map labels, add arc *)
+
 
   let graph2 = gmap graph (fun lbl -> int_of_string lbl) in
   let graph3 = add_arc graph2 0 5 15 in
