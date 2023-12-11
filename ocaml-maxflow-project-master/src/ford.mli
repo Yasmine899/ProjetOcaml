@@ -1,7 +1,7 @@
 open Graph
 
 
-val find_path : int graph -> id -> id -> int list option
+val find_path : int Graph.graph -> id -> id -> int list option
 
 val minflot : int graph -> id list -> int
 

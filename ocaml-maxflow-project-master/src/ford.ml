@@ -2,7 +2,7 @@ open Graph
 open Tools
 open Gfile
 
-let find_path graph id1 id2 =
+val find_path : int Graph.graph -> id -> id -> int list option= fun graph id1 id2 ->
   let rec pl id1 id2 visited =
     if id1 = id2 then
       Some [id2]
