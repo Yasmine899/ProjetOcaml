@@ -63,6 +63,24 @@ let read_node graph line =
  * (Necessary because the website we use to create online graphs does not generate correct files when some nodes have been deleted.) *)
 let ensure graph id = if node_exists graph id then graph else new_node graph id
 
+let export path graph =
+let ff = open_out path in
+fprintf ff "digraph MyGraph {\n" ;
+fprintf ff "fontname=\"Helvetica,Arial,sans-serif\"\n" ;
+fprintf ff "node [fontname=\"Helvetica,Arial,sans-serif\"]\n" ;
+fprintf ff "edge [fontname=\"Helvetica,Arial,sans-serif\"]\n" ;
+fprintf ff "rankdir=LR;\n" ;
+fprintf ff "node [shape = circle];\n" ;
+
+(* Write all arcs *)
+
+e_iter graph (fun arc -> fprintf ff "\t%d -> %d [ label = \"%s\" ];\n" arc.src arc.tgt arc.lbl) ;
+fprintf ff "}\n" ;
+
+close_out ff ;
+()
+
+
 (* Reads a line with an arc. *)
 let read_arc graph line =
   try Scanf.sscanf line "e %d %d %_d %s@%%"
