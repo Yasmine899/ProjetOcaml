@@ -1,35 +1,6 @@
 open Graph
 open Tools
-(* open Gfile *)
 
-(* Return the max flow and its path from s to t. *)
-(*
-let find_path g s t =
-  let table = Hashtbl.create (nb_nodes g) in
-  let () = Hashtbl.add table t (Int.max_int,[t]) in
-  let rec loop n = 
-    let (flow,path) = Hashtbl.find table n in
-    let explore e = 
-      (* If we have already explore the source. *)
-      if Hashtbl.mem table e.src 
-      then 
-        let (flow_src,_) = Hashtbl.find table e.src in 
-        let new_flow = min flow e.lbl in
-        if new_flow > flow_src then
-          Hashtbl.replace table e.src (new_flow, e.src::path);
-          loop e.src
-      else 
-        Hashtbl.add table e.src (min flow e.lbl, e.src::path);
-        loop e.src
-
-    in 
-      List.iter explore (in_arcs g n)
-  in
-    loop t;
-    Hashtbl.find_opt table s*)
-
-(* path(X,Y) :- arc(X,Y) *)
-(* path(X,Z) :- arc(X,Y), path(Y,Z) *)
 
 (* Return an optional path (list of nodes) from s to t. *)
 let find_path g s t = 
