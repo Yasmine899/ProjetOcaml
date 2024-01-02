@@ -1,43 +1,42 @@
 open Graph
 
-(* Returns the number of nodes in a graph. *)
-let count_nodes g = n_fold g (fun count _ -> count + 1) 0
+(* Return the number of nodes of a graph. *)
+let nb_nodes g = n_fold g (fun r _ -> r + 1) 0
 
-(* Clones a graph, removing all its arcs. *)
+(* Clones a graph, and deletes all his arcs. *)
 let clone_nodes g = n_fold g new_node empty_graph
 
-(* Maps all arcs of the graph using the provided function. *)
-let map_arcs g f = e_fold g (fun acc arc -> new_arc acc {arc with lbl = f arc.lbl}) (clone_nodes g)
+(* Maps all arcs of g by f. *)
+let gmap g f = e_fold g (fun acu e -> new_arc acu {e with lbl = f e.lbl}) (clone_nodes g)
 
-(* Adds a value to the label of the arc between id1 and id2. 
+(* Adds n to the value of the arc between id1 and id2. 
 * If the arc doesn't exist, create one. *)
-let add_arc g id1 id2 value = 
-  let new_g = clone_nodes g in
-  let update_arc accu arc = 
-    if (arc.src, arc.tgt) = (id1, id2) 
-    then new_arc accu {arc with lbl = arc.lbl + value} 
-    else new_arc accu arc 
+let add_arc g id1 id2 n = 
+  let ge = clone_nodes g in
+  let f new_g e = if (e.src,e.tgt) = (id1,id2) 
+    then new_arc new_g {e with lbl=e.lbl+n} 
+    else new_arc new_g e 
   in
-  if Option.is_none (find_arc g id1 id2)
-  then new_arc g {src = id1; tgt = id2; lbl = value}
-  else e_fold g update_arc new_g
+    if Option.is_none (find_arc g id1 id2)
+    then new_arc g {src=id1; tgt=id2; lbl=n}
+    else e_fold g f ge
 
-(* Returns all arcs of the graph. *)
-let get_all_arcs g = e_fold g (fun arcs arc -> arc :: arcs) []
+(* Return all arcs of the graph. *)
+let get_arcs g = e_fold g (fun l e -> e::l) []
 
-(* Returns the arcs going to the node with the given id. *)
-let incoming_arcs g id = List.filter (fun arc -> arc.tgt = id) (get_all_arcs g)
+(* Return the arcs going to the node with the given id. *)
+let in_arcs g id = List.filter (fun e -> e.tgt=id) (get_arcs g)
 
-(* Returns a list of arcs from a path (list of nodes). *)
+(* Return a list of arcs from a path (list of nodes). *)
 let arcs_of_path graph path =
-  let accumulate_arcs acu node =
-    let (arcs, prev_node) = acu in
-    let arc = Option.get (find_arc graph prev_node node) in
-    (arc :: arcs, node)
+  let f acu n = 
+    let (arcs,prev_n) = acu in
+    let arc = Option.get (find_arc graph prev_n n) in
+    (arc::arcs,n)
   in
-  let (arcs, _) = List.fold_left accumulate_arcs ([], List.hd path) (List.tl path) in
-  arcs
+    let (arcs,_) = List.fold_left f ([],List.hd path) (List.tl path) in
+    arcs
 
-(* Filters the edges of the graph based on a predicate. *)
-let filter_edges graph predicate = 
-  e_fold graph (fun filtered_edges arc -> if predicate arc then new_arc filtered_edges arc else filtered_edges) (clone_nodes graph)
+(* Filter the edges of the graph. *)
+let e_filter graph f = 
+  e_fold graph (fun g e -> if f e then new_arc g e else g) (clone_nodes graph)
