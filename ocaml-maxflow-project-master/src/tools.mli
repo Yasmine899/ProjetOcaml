@@ -7,7 +7,7 @@ val count_nodes : 'a graph -> int
 val clone_nodes : 'a graph -> 'a graph
 
 (** Maps all arcs of the graph using the provided function. *)
-val map_arcs : 'a graph -> ('a arc -> 'b) -> 'b graph
+val map_arcs: 'a graph -> ('a -> 'b) -> 'b graph
 
 (** Adds a value to the label of the arc between id1 and id2. 
  * If the arc doesn't exist, create one. *)
