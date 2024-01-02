@@ -4,8 +4,9 @@ open Ford
 
 let () =
   (* Check the number of command-line arguments *)
-  if Array.length Sys.argv <> 5 then
+  if Array.length Sys.argv <> 6 then
     begin
+      Printf.printf "%i" (Array.length Sys.argv);
       Printf.printf
         "\n ✻  Usage: %s infile source sink outfile\n\n%s%!" Sys.argv.(0)
         ("    🟄  infile  : input file containing a graph\n" ^
