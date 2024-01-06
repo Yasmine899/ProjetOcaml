@@ -2,54 +2,63 @@ open Graph
 open Tools
 
 
-(* Return an optional path (list of nodes) from s to t. *)
-let find_path g s t = 
-  let rec loop path n =
-    if List.exists (fun x -> x = n) path 
-      then None
-      else 
-        if n = t
-        then Some (n::path)
-        else 
-          let arcs = out_arcs g n in
-          let f op a = match op with
-            | Some p -> Some p
-            | None -> loop (n::path) a.tgt
-          in
-            List.fold_left f None arcs
+let rec explore_path visited graph current target =
+  if current = target then Some [current]
+  else if List.mem current visited then None
+  else
+    let out_edges = out_arcs graph current in
+    let try_explore = function
+      | { tgt; _ } ->
+        match explore_path (current :: visited) graph tgt target with
+        | Some path -> Some (current :: path)
+        | None -> None
+    in
+    let rec explore = function
+      | [] -> None
+      | edge :: rest ->
+        match try_explore edge with
+        | Some path -> Some path
+        | None -> explore rest
+    in
+    explore out_edges
+
+let find_path graph source target =
+  explore_path [] graph source target
+
+
+let min_flow graph path =
+  let rec find_min_capacity min_capacity = function
+    | [] | [_] -> min_capacity 
+    | src :: tgt :: rest ->
+      match find_arc graph src tgt with
+      | Some arc -> find_min_capacity (min min_capacity arc.lbl) (tgt :: rest)
+      | None -> min_capacity
   in
-    let rev_path_opt = loop [] s in
-    Option.map List.rev rev_path_opt
+  find_min_capacity max_int path
 
 
-(* Return the maximal possible flow along the path. *)
-let compute_flow g path =
-  let arcs = arcs_of_path g path in
-  List.fold_left (fun m e -> min m e.lbl) Int.max_int arcs
+let updating_graph graph path flow =
+  let reverse_flow e = { e with src = e.tgt; tgt = e.src } in
+  let reversed_arcs = List.map reverse_flow (arcs_of_path graph path) in
+  let updated_graph = List.fold_left (fun g e -> add_arc g e.src e.tgt (-flow)) graph (arcs_of_path graph path) in
+  let filtered_graph = e_filter updated_graph (fun e -> e.lbl <> 0) in
+  List.fold_left (fun g e -> add_arc g e.src e.tgt flow) filtered_graph reversed_arcs
 
-(* Compute the next graph using the given path and flow. *)
-let next_graph g path flow =
-  let arcs = arcs_of_path g path in
-  let g1 = List.fold_left (fun g e -> add_arc g e.src e.tgt (-flow)) g arcs in
-  let g2 = e_filter g1 (fun e -> e.lbl <> 0) in
-  let g3 = List.fold_left (fun g e -> add_arc g e.tgt e.src flow) g2 arcs in
-  g3
 
-(* Compute the Ford-Fulkerson algorithm on the given capacity graph.
-  s and t are respectively the source and the sink.
-  Return the the flow graph with the given capacity. *)
 let ford_fulkerson graph s t =
   let rec loop g = 
     let opt_path = find_path g s t in 
     match opt_path with
       | None -> g
       | Some path -> 
-        let flow = compute_flow g path in
-        let ng = next_graph g path flow in
+      Printf.printf "Path found: ";
+      List.iter (fun n -> Printf.printf "%d " n) path;
+      Printf.printf "\n";
+        let flow = min_flow g path in
+        let ng = updating_graph g path flow in
           loop ng
     in
       let final_graph = loop graph in
-      (* export (gmap final_graph string_of_int); *)
       let func g e =  
         let capacity = e.lbl in
         let r_arc_opt = find_arc final_graph e.tgt e.src in
@@ -60,3 +69,4 @@ let ford_fulkerson graph s t =
           new_arc g {e with lbl=(flow,capacity)}
       in
         e_fold graph func (clone_nodes graph)
+
