@@ -1,6 +1,7 @@
 open Gfile
 open Tools
 open Ford
+open Bipartite
 
 let () =
   (* Check the number of command-line arguments *)
@@ -23,6 +24,7 @@ let () =
   let outfile = Sys.argv.(4) in
 
   (* Open file *)
+  let matching_result = bipartite_matching num_applicants num_jobs preferences in
   let graph = from_file infile in
   let graph = gmap graph int_of_string in
   let final_graph = ford_fulkerson graph source sink in 
