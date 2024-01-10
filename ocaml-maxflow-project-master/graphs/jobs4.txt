@@ -1,0 +1,12 @@
+armand boulanger,professeur,garagiste
+yasmine ingenieur,professeur,garagiste
+titouan boulanger,ingenieur
+emma architecte,medecin,professeur
+thomas informaticien,pompier,architecte
+laura avocat,policier,photographe
+antoine electricien,plombier,veterinaire
+clara psychologue,chercheur,journaliste
+nathan charpentier,professeur,dentiste
+olivia medecin,psychologue,architecte
+leo prof,photographe,avocat
+elise ingenieur,policier,medecin
