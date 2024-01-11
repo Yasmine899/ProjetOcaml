@@ -1,7 +1,7 @@
 open Gfile
 open Tools
 open Ford
-open Bipartite
+(*open Bipartite*)
 
 let () =
   (* Check the number of command-line arguments *)
@@ -22,9 +22,10 @@ let () =
   let source = int_of_string Sys.argv.(2) in
   let sink = int_of_string Sys.argv.(3) in
   let outfile = Sys.argv.(4) in
+  let outfiledot = Sys.argv.(5) in
 
   (* Open file *)
-  let matching_result = bipartite_matching num_applicants num_jobs preferences in
+  (*let matching_result = bipartite_matching num_applicants num_jobs preferences in*)
   let graph = from_file infile in
   let graph = gmap graph int_of_string in
   let final_graph = ford_fulkerson graph source sink in 
@@ -32,4 +33,6 @@ let () =
 
   (* Rewrite the graph that has been read. *)
   let () = write_file outfile str_graph in
-  ()
+  ();
+
+  export outfiledot str_graph;
