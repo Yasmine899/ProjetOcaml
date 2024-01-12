@@ -64,7 +64,7 @@ let ford_fulkerson graph s t =
         let r_arc_opt = find_arc final_graph e.tgt e.src in
         let flow = match r_arc_opt with
           | None -> 0
-          | Some r_arc -> r_arc.lbl
+          | Some r_arc -> min capacity r_arc.lbl
         in
           new_arc g {e with lbl=(flow,capacity)}
       in
