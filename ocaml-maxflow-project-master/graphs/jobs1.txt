@@ -1,31 +1,21 @@
-%% Test graph #1
+%employees
+e yasmine 
+e armand 
+e machin
+e thomas  
 
-%% Nodes
+%jobs
 
-n 37.65822784810127 300.48544430038305 0
-n 178.3227848101266 383.0097161450432 1
-n 177.21518987341773 305.3398132324219 2
-n 179.43037974683543 227.66991031980052 3
-n 335.6012658227848 386.6504928440724 7
-n 337.8164556962025 306.5534054654316 9
-n 335.6012658227848 225.2427258537811 10
-n 500.6329113924051 306.5534054654316 11
-
-
-%% Edges (arcs)
+j engineer 
+j doctor 
+j singer 
+j dancer 
 
 
-e 10 11 9 1
-e 9 11 10 1
-e 7 11 11 1
-e 0 1 12 1
-e 0 2 13 1
-e 0 3 14 1
-e 1 9 15 1
-e 1 7 16 1
-e 2 9 17 1
-e 2 10 18 1
-e 3 7 19 1
-e 3 10 21 1
-
-% End of graph
+%voeux 
+v yasmine dancer 
+v yasmine singer 
+v thomas singer 
+v machin engineer 
+v machin doctor
+v armand singer 
