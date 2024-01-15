@@ -1,7 +1,7 @@
 .PHONY: all build format edit demo clean
 
-src?=1
-dst?=2
+src?=0
+dst?=1
 graph?=jobs1.txt
 
 all: build

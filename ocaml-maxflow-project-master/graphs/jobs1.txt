@@ -1,21 +1,19 @@
 %employees
 e yasmine 
-e armand 
+e thomas
 e machin
-e thomas  
 
 %jobs
 
 j engineer 
 j doctor 
 j singer 
-j dancer 
+
 
 
 %voeux 
-v yasmine dancer 
+v yasmine engineer
 v yasmine singer 
-v thomas singer 
-v machin engineer 
-v machin doctor
-v armand singer 
+v thomas doctor
+v machin singer
+
