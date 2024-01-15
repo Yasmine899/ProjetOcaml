@@ -1,0 +1,29 @@
+(* tools.mli *)
+
+type id = int
+
+type 'a arc = {
+  src: id;
+  tgt: id;
+  lbl: 'a;
+}
+
+type 'a graph = (id * 'a arc list) list
+
+exception Graph_error of string
+
+val empty_graph : 'a graph
+val node_exists : 'a graph -> id -> bool
+val out_arcs : 'a graph -> id -> 'a arc list
+val find_arc : 'a graph -> id -> id > 'a arc option
+val new_node : 'a graph -> id -> 'a graph
+val new_arc : 'a graph -> 'a arc -> 'a graph
+val n_iter : 'a graph -> (id -> unit) -> unit
+val n_iter_sorted : 'a graph -> (id -> unit) -> unit
+val n_fold : 'a graph -> ('b -> id -> 'b) -> 'b -> 'b
+val e_iter : 'a graph -> ('a arc -> unit) -> unit
+val e_fold : 'a graph -> ('b -> 'a arc -> 'b) -> 'b -> 'b
+
+val clone_nodes : 'a graph -> 'b graph
+val gmap : 'a graph -> ('a -> 'b) -> 'b graph
+val add_arc : int graph -> id -> id -> int -> int graph

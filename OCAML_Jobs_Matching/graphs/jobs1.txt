@@ -1,0 +1,25 @@
+%employees
+e yasmine 
+e thomas
+e machin
+e machin2
+
+%jobs
+
+j itengineer 
+j doctor 
+j teacher
+j banker
+
+
+
+%voeux 
+v yasmine itengineer
+v yasmine teacher
+v yasmine doctor
+v thomas banker
+v thomas doctor
+v thomas itengineer
+v machin doctor 
+v machin2 teacher
+
